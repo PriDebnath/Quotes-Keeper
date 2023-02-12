@@ -188,7 +188,6 @@ li {
   padding: 15% 3% 3% 3%;
   font-weight: 100;
   position: relative;
-  line-break: anywhere;
 }
 
 .quoteUi:hover .icon {
