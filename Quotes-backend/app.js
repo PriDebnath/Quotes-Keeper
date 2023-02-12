@@ -41,7 +41,7 @@ const quoteModel = mongoose.model("quote", quoteSchema);
 // Setting all routes
 
 
-app.get("/", (req, res) => {
+app.get("/", async(req, res) => {
   console.log("client came");
   
   const data = await quoteModel.find();
@@ -57,7 +57,6 @@ app.get("/quotes", async (req, res) => {
     res.send(data);
   }
 });
-
 
 
 
