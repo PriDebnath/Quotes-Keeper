@@ -43,7 +43,12 @@ const quoteModel = mongoose.model("quote", quoteSchema);
 
 app.get("/", (req, res) => {
   console.log("client came");
-  res.send("client came")
+  
+  const data = await quoteModel.find();
+  if (data) {
+    res.send(data);
+  }
+
 })
 
 app.get("/quotes", async (req, res) => {
