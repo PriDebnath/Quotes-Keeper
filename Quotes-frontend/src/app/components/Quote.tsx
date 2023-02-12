@@ -54,7 +54,6 @@ function Quote() {
 
 
   let handleInputs = (event: any) => {
-    console.log(event.target)
     let inputName = event.target.name;
     let inputVal = event.target.value;
     setInputValue({ ...inputValue, [inputName]: inputVal });
