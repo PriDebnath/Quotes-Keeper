@@ -2,14 +2,16 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-
-const port =  process.env.PORT || 8000 ;
-const hostname =  process.env.HOSTNAME || "localhost";
+const port = process.env.PORT || 8000;
+const hostname = process.env.HOSTNAME || "localhost";
 const CONNECTION_URL = process.env.CONNECTION_URL;
+
+
 
 const app = express()
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ strict: false }))
+
 
 
 mongoose
@@ -23,10 +25,12 @@ mongoose
 
 //  Defining schema
 
+
 const quoteSchema = mongoose.Schema({
   quote_author: String,
   quote_text: String,
-  quote_media : Object , 
+  created_at: Number,
+  modified_at: Number,
 });
 
 // Creating model, it will generate a collection in database
@@ -36,67 +40,75 @@ const quoteModel = mongoose.model("quote", quoteSchema);
 
 // Setting all routes
 
-app.get("/quote", async (req, res) => {
+app.get("/quotes", async (req, res) => {
   const data = await quoteModel.find();
-  if (data) { 
+  if (data) {
     res.send(data);
-   console.log(data);
   }
 });
 
-app.post("/quote", async (req, res) => {
-  const { title, quoteText } = req.body;
 
-  if (title && quoteText) {
+
+
+app.post("/quote", async (req, res) => {
+
+  const { quote_author, quote_text } = req.body;
+
+  if (quote_author && quote_text) {
     const newquote = new quoteModel({
-      title: title,
-      quoteText: quoteText,
+      quote_author: quote_author,
+      quote_text: quote_text,
+      created_at: new Date().getTime(),
+      modified_at: new Date().getTime(),
     });
     newquote
       .save()
       .then((data) => {
-        console.log("data saved");
+        res.status(201).send(data)
+        console.log("data saved", data);
       })
       .catch((error) => {
         res.status(400).send("Bad request");
-        //  console.log(error);
       });
-
-    res.json(newquote);
-    console.log("saved");
   } else {
-    res.status(400).send("something missing");
-    //  console.log("something missing");
+    res.status(400).send("something missing ...");
+    console.log("something missing");
   }
 });
+
+
 
 app.put("/quote/:_id", async (req, res) => {
   if (req.params._id && req.body) {
-    const { _id } = req.params;
-    await quoteModel.updateOne(
-      { _id: _id },
+    const { quote_author, quote_text, quote_media } = req.body;
+
+    let updatedQuote = await quoteModel.findByIdAndUpdate(
+      { _id: req.params._id },
       {
-        title: req.body.title,
-        quoteText: req.body.quoteText,
-      }
+        quote_author: quote_author,
+        quote_text: quote_text,
+        quote_media: quote_media,
+        modified_at: new Date().getTime(),
+      }, {
+      returnOriginal: false
+    }
     );
-    res.send("updated");
-    console.log("updated");
+    res.send(updatedQuote);
+    console.log("updated", updatedQuote);
   } else {
-    res.status(400).send("something");
+    res.status(400).send("something ");
   }
 });
 
-app.delete("/quote/:id", async (req, res) => {
-  console.log(req.params);
-  const { id } = req.params;
+app.delete("/quote/:_id", async (req, res) => {
+  const { _id } = req.params;
 
-  const deletedquote = await quoteModel.deleteOne({ _id: id });
-  console.log("data deleted");
-  res.json(deletedquote);
+  const deletedquote = await quoteModel.deleteOne({ _id: _id });
+  res.json(req.params);
 });
 
 
-app.listen(port,  () => {
+app.listen(port, () => {
   console.log("Running on - " + hostname + port);
 });
+

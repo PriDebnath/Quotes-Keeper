@@ -1,12 +1,11 @@
 import { useState } from 'react'
 import './App.css'
-import Todo from './app/components/Todo'
+import Todo from './app/components/Quote'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-  <Todo/>
+    <Todo />
   )
 }
 
