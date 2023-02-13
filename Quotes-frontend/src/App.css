@@ -16,11 +16,11 @@
 }
 
 :root {
-  --black-tr: rgba(100, 100, 100, 0.4);
+  --black-tr: rgba(100, 100, 100, 0.6);
   --blur-10: blur(10px)
 }
 
-html{
+html {
   scroll-behavior: smooth;
 }
 
@@ -29,11 +29,11 @@ body {
   color: white;
   margin: 0;
   padding: 0;
-  font-family: 'Courgette', cursive;
+  font-family: 'Courgette', sans-serif;
 }
 
 h2 {
-  margin: auto 0.5rem;
+  margin: 0.5rem;
 }
 
 .formContainer {
@@ -55,7 +55,7 @@ form {
   align-items: center;
   width: 80%;
   position: relative;
-  box-shadow: 0 0 1rem rgb(0, 0, 0, 0.5);
+  box-shadow: 0 0 1rem var(--black-tr);
   z-index: 3;
   outline: 4px solid white;
 
@@ -158,36 +158,46 @@ nav {
   z-index: 2;
 }
 
-.title {
+.author {
   color: smoke;
   font-size: 1.1rem;
   text-align: right;
+  /* display: flex; */
+
+}
+
+.text {
+  margin: auto;
 }
 
 li {
   list-style: none;
-  font-family: 'Courgette', cursive;
+  font-family: 'Courgette', sans-serif;
 }
 
 .quoteList {
   display: grid;
   margin: auto 0.5rem;
-  margin-top: 8vh;
-  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
-  /* align-items: end; */
- 
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+
+
 }
 
 .quoteUi {
   backdrop-filter: var(--blur-10);
-  background: rgba(100, 100, 100, 0.4);
+  background: var(--black-tr);
   /* background: rgba(255,255,255, 0.7); */
   /* color: black; */
   color: white;
   margin: 0.2rem;
-  padding: 15% 3% 3% 3%;
+  padding: 15% 6% 6% 6%;
   font-weight: 100;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: auto;
+
 }
 
 .quoteUi:hover .icon {
@@ -197,7 +207,7 @@ li {
 .icon {
   background: transparent;
   border: 2px solid gray;
-  position: absolute;
+  position: fixed;
   width: 2rem;
   margin: auto;
   display: grid;
@@ -242,7 +252,7 @@ li {
   place-items: center;
   cursor: pointer;
   background: rgba(0, 255, 0, 1);
-  box-shadow: 0 0 0.5rem rgba(0, 0, 0,0.5);
+  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5);
   padding: 0;
 }
 
@@ -266,7 +276,7 @@ li {
   width: 16rem;
   border-radius: 20rem;
   top: 9rem;
-  animation: move  170s 5s infinite alternate;
+  animation: move 170s 5s infinite alternate;
 
 }
 
@@ -280,7 +290,7 @@ li {
   border-radius: 20rem;
   top: 19rem;
   left: 2rem;
-  animation: move 190s  1s infinite alternate;
+  animation: move 190s 1s infinite alternate;
 
 }
 
@@ -293,8 +303,8 @@ li {
   border-radius: 20rem;
   top: 19rem;
   left: 17rem;
-  animation: move 220s  1s infinite alternate;
-  
+  animation: move 220s 1s infinite alternate;
+
 }
 
 .greenCircle {
@@ -306,7 +316,7 @@ li {
   border-radius: 20rem;
   top: -5rem;
   right: -6rem;
-  animation: move  200s 10s infinite alternate;
+  animation: move 200s 10s infinite alternate;
 }
 
 @keyframes move {
@@ -315,17 +325,17 @@ li {
   }
 
   40% {
-    transform: translate(5rem,4rem);
+    transform: translate(5rem, 4rem);
 
   }
 
   60% {
-    transform: translate(1rem,-4rem);
+    transform: translate(1rem, -4rem);
 
   }
 
   80% {
-    transform: translate(-10rem,-10rem);
+    transform: translate(-10rem, -10rem);
 
   }
 

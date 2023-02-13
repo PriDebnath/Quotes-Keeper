@@ -132,7 +132,7 @@ function Quote() {
               <div key={i} className="quoteUi">
 
                 <li className="text"> ' {quote_text} , </li>
-                <li className="title"> - {quote_author}</li>
+                <li className="author"> - {quote_author}</li>
 
                 <button
                   className="icon editIcon"
