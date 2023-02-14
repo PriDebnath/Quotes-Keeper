@@ -1,3 +1,3 @@
-### Quotes-Keeper - hoasted link
+### Hosted link
 
 ### https://quoteskeeperbypri.netlify.app/
