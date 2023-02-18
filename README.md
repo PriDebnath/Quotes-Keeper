@@ -1,3 +1,1 @@
-### Hosted link
-
-### https://quoteskeeperbypri.netlify.app/
+#### Hosted link - https://quoteskeeperbypri.netlify.app/
