@@ -5,14 +5,10 @@ const cors = require("cors");
 const port = process.env.PORT || 8000;
 const hostname = process.env.HOSTNAME || "localhost";
 const CONNECTION_URL = process.env.CONNECTION_URL;
-
-
-
-const app = express()
+ 
+const app = express();
 app.use(cors());
-app.use(express.json({ strict: false }))
-
-
+app.use(express.json({ strict: false }));
 
 mongoose
   .connect(CONNECTION_URL, { useNewUrlParser: true })
@@ -20,11 +16,11 @@ mongoose
     console.log("Connected to database");
   })
   .catch((e) => {
+    console.log({ e });
     console.log("Not connected to database");
   });
 
 //  Defining schema
-
 
 const quoteSchema = mongoose.Schema({
   quote_author: String,
@@ -37,19 +33,16 @@ const quoteSchema = mongoose.Schema({
 
 const quoteModel = mongoose.model("quote", quoteSchema);
 
-
 // Setting all routes
 
-
-app.get("/", async(req, res) => {
+app.get("/", async (req, res) => {
   console.log("client came");
-  
+
   const data = await quoteModel.find();
   if (data) {
     res.send(data);
   }
-
-})
+});
 
 app.get("/quotes", async (req, res) => {
   const data = await quoteModel.find();
@@ -58,10 +51,7 @@ app.get("/quotes", async (req, res) => {
   }
 });
 
-
-
 app.post("/quote", async (req, res) => {
-
   const { quote_author, quote_text } = req.body;
 
   if (quote_author && quote_text) {
@@ -74,7 +64,7 @@ app.post("/quote", async (req, res) => {
     newquote
       .save()
       .then((data) => {
-        res.status(201).send(data)
+        res.status(201).send(data);
         console.log("data saved", data);
       })
       .catch((error) => {
@@ -85,8 +75,6 @@ app.post("/quote", async (req, res) => {
     console.log("something missing");
   }
 });
-
-
 
 app.put("/quote/:_id", async (req, res) => {
   if (req.params._id && req.body) {
@@ -99,9 +87,10 @@ app.put("/quote/:_id", async (req, res) => {
         quote_text: quote_text,
         quote_media: quote_media,
         modified_at: new Date().getTime(),
-      }, {
-      returnOriginal: false
-    }
+      },
+      {
+        returnOriginal: false,
+      }
     );
     res.send(updatedQuote);
     console.log("updated", updatedQuote);
@@ -117,8 +106,6 @@ app.delete("/quote/:_id", async (req, res) => {
   res.json(req.params);
 });
 
-
 app.listen(port, () => {
   console.log("Running on - " + hostname + port);
 });
-
