@@ -1,5 +1,4 @@
 * {
-
   border-radius: 0.4rem;
   /* padding: 0.1rem; */
   transition: 0.4s;
@@ -17,7 +16,7 @@
 
 :root {
   --black-tr: rgba(100, 100, 100, 0.6);
-  --blur-10: blur(10px)
+  --blur-10: blur(10px);
 }
 
 html {
@@ -29,7 +28,7 @@ body {
   color: white;
   margin: 0;
   padding: 0;
-  font-family: 'Courgette', sans-serif;
+  font-family: "Courgette", sans-serif;
 }
 
 h2 {
@@ -58,9 +57,6 @@ form {
   box-shadow: 0 0 1rem var(--black-tr);
   z-index: 3;
   outline: 4px solid white;
-
-
-
 }
 
 form::before {
@@ -72,7 +68,6 @@ form::before {
   border-right: 2rem solid transparent;
   border-top: 2rem solid white;
   backdrop-filter: var(--blur-10);
-
 }
 
 .hideForm {
@@ -96,13 +91,11 @@ textarea {
   /* min-width: 250px; */
   max-width: 250px;
   margin: 0.4rem;
-
 }
 
 input:focus,
 textarea:focus {
   outline: 3px solid white;
-
 }
 
 input::placeholder,
@@ -126,12 +119,11 @@ textarea::placeholder {
   background: transparent;
   color: white;
 
-  border: 3px solid yellow
+  border: 3px solid yellow;
 }
 
 .editButton:hover {
   color: yellow;
-
 }
 
 nav {
@@ -163,7 +155,6 @@ nav {
   font-size: 1.1rem;
   text-align: right;
   /* display: flex; */
-
 }
 
 .text {
@@ -172,14 +163,13 @@ nav {
 
 li {
   list-style: none;
-  font-family: 'Courgette', sans-serif;
+  font-family: "Courgette", sans-serif;
 }
 
 .quoteList {
   display: grid;
   margin: auto 0.5rem;
   grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
-
 }
 
 .quoteUi {
@@ -196,7 +186,6 @@ li {
   flex-direction: column;
   justify-content: space-between;
   overflow: auto;
-
 }
 
 .quoteUi:hover .icon {
@@ -214,10 +203,6 @@ li {
   padding: 0;
   opacity: 0;
 }
-
-
-
-
 
 .deleteIcon {
   top: 0;
@@ -237,9 +222,6 @@ li {
   border: 2px solid yellow;
 }
 
-
-
-
 .showHideFormButtom {
   width: 3rem;
   height: 3rem;
@@ -255,17 +237,10 @@ li {
   padding: 0;
 }
 
-
 .hideFormBtton {
   transform: rotate(225deg);
   background: rgba(255, 0, 0, 1);
-
 }
-
-
-
-
-
 
 .blueCircle {
   position: fixed;
@@ -276,9 +251,7 @@ li {
   border-radius: 20rem;
   top: 9rem;
   animation: move 170s 5s infinite alternate;
-
 }
-
 
 .redCircle {
   position: fixed;
@@ -290,7 +263,6 @@ li {
   top: 19rem;
   left: 2rem;
   animation: move 190s 1s infinite alternate;
-
 }
 
 .yellowCircle {
@@ -303,7 +275,6 @@ li {
   top: 19rem;
   left: 17rem;
   animation: move 220s 1s infinite alternate;
-
 }
 
 .greenCircle {
@@ -325,18 +296,66 @@ li {
 
   40% {
     transform: translate(5rem, 4rem);
-
   }
 
   60% {
     transform: translate(1rem, -4rem);
-
   }
 
   80% {
     transform: translate(-10rem, -10rem);
-
   }
 
-  100% {}
+  100% {
+  }
 }
+
+/* Loader start */
+.loader {
+  display: flex;
+  height: 80vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+@keyframes loadingTextVisiable {
+  100% {
+    opacity: 1;
+  }
+}
+.loader-text {
+  opacity: 0;
+  animation: loadingTextVisiable 3s 2s forwards;
+  transition: 1s;
+}
+
+@keyframes color-shoot {
+  0% {
+    fill: rgb(255, 0, 0); /* Red */
+  }
+  17% {
+    fill: rgb(255, 127, 0); /* Orange */
+  }
+  34% {
+    fill: rgb(255, 255, 0); /* Yellow */
+  }
+  50% {
+    fill: rgb(0, 255, 0); /* Green */
+  }
+  67% {
+    fill: rgb(0, 0, 255); /* Blue */
+  }
+  84% {
+    fill: rgb(75, 0, 130); /* Indigo */
+  }
+  100% {
+    fill: rgb(143, 0, 255); /* Violet */
+  }
+}
+
+.color-changing-box {
+  transition: fill 2s ease-in-out;
+  animation: color-shoot 4s infinite;
+}
+
+/* Loader end */

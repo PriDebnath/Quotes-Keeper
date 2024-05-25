@@ -1,24 +1,28 @@
 import React, { useState, useEffect } from "react";
-import AddRoundedIcon from '@mui/icons-material/AddRounded';
-import EditRoundedIcon from '@mui/icons-material/EditRounded';
-import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
-import ImageList from '@mui/material/ImageList';
-import ImageListItem from '@mui/material/ImageListItem';
+import AddRoundedIcon from "@mui/icons-material/AddRounded";
+import EditRoundedIcon from "@mui/icons-material/EditRounded";
+import DeleteForeverRoundedIcon from "@mui/icons-material/DeleteForeverRounded";
+import ImageList from "@mui/material/ImageList";
+import ImageListItem from "@mui/material/ImageListItem";
 
 import { useSelector, useDispatch } from "react-redux/es/exports";
-import { getQuotes, addQuote, editQuote, deleteQuote } from "../redux/features/quote/quoteApi";
+import {
+  getQuotes,
+  addQuote,
+  editQuote,
+  deleteQuote,
+} from "../redux/features/quote/quoteApi";
 import API_REQUEST_STATUS from "../utils/constants/apiRequestStatus";
 import AddEditQuote from "./AddEditQuote";
-const { IDLE, PENDING, SUCCEEDED, FAILED } = API_REQUEST_STATUS
-
-
-
+import Loader from "./loader";
+const { IDLE, PENDING, SUCCEEDED, FAILED } = API_REQUEST_STATUS;
 
 function Quote() {
-  const dispatch: any = useDispatch()
+  const dispatch: any = useDispatch();
   const quote = useSelector((globalState: any) => globalState.quote);
   const [openAddEditQuote, setOpenAddEditQuote] = useState(false);
   let [quotes, setQuotes]: any = useState([]);
+  let [loading, setLoading]: any = useState([]);
   let [editableQuote, setEditableQuote]: any = useState(null);
 
   let [inputValue, setInputValue]: any = useState({
@@ -30,28 +34,26 @@ function Quote() {
   });
 
   const handleClickOpenAddEditQuote = () => {
-    setEditableQuote(null)
+    setEditableQuote(null);
     setOpenAddEditQuote(!openAddEditQuote);
   };
 
   useEffect(() => {
-    dispatch(getQuotes())
-  }, [])
-
+    dispatch(getQuotes({ sort: "desc" }));
+  }, []);
 
   useEffect(() => {
     if (quote.status == PENDING) {
-      // code 
+      setLoading(true);
     }
     if (quote.status == SUCCEEDED) {
-      setQuotes(quote.data)
+      setQuotes(quote.data);
+      setLoading(false);
     }
     if (quote.status == FAILED) {
-      // code 
+      // code
     }
-
   }, [quote]);
-
 
   let handleInputs = (event: any) => {
     let inputName = event.target.name;
@@ -59,33 +61,29 @@ function Quote() {
     setInputValue({ ...inputValue, [inputName]: inputVal });
   };
 
-
   let handleSubmit = async (e: any) => {
     if (inputValue.quote_author && inputValue.quote_text) {
       e.preventDefault();
 
-      dispatch(addQuote(inputValue))
-      handleClickOpenAddEditQuote()
+      dispatch(addQuote(inputValue));
+      handleClickOpenAddEditQuote();
       setInputValue({
         quote_author: "",
         quote_text: "",
         _id: "",
       });
-      window.scroll()
+      window.scroll();
     } else {
-      alert("Fill input fields properly")
+      alert("Fill input fields properly");
     }
   };
 
-
-
   let handleClickEditQuote = async (id: string) => {
-
     let editedQuote = quotes.find((todo: any) => {
       return todo._id === id;
     });
 
-    setEditableQuote(editedQuote)
+    setEditableQuote(editedQuote);
 
     setInputValue({
       quote_author: editedQuote.quote_author,
@@ -93,25 +91,23 @@ function Quote() {
       _id: editedQuote._id,
     });
 
-    setOpenAddEditQuote(true)
+    setOpenAddEditQuote(true);
   };
 
   const handleEdit = (e: any) => {
     e.preventDefault();
-    dispatch(editQuote(inputValue))
+    dispatch(editQuote(inputValue));
     setInputValue({
       quote_author: "",
       quote_text: "",
       _id: "",
     });
-    handleClickOpenAddEditQuote()
+    handleClickOpenAddEditQuote();
   };
 
-
   const handleDeleteQuote = (_id: string) => {
-    dispatch(deleteQuote(_id))
-  }
-
+    dispatch(deleteQuote(_id));
+  };
 
   return (
     <div>
@@ -123,27 +119,23 @@ function Quote() {
       <h2>Quotes Keeper</h2>
 
       <div className="quoteList">
-
-        {quotes?.length > 0 ?
-          (quotes.map((quote: any, i: number) => {
+        {loading ? (
+          <Loader />
+        ) : quotes?.length > 0 ? (
+          quotes.map((quote: any, i: number) => {
             let { quote_author, _id, quote_text } = quote;
 
             return (
               <div key={i} className="quoteUi">
-
                 <li className="text"> ' {quote_text} , </li>
                 <li className="author"> - {quote_author}</li>
-
                 <button
                   className="icon editIcon"
                   onClick={() => {
                     handleClickEditQuote(_id);
                   }}
                 >
-                  <EditRoundedIcon sx={{
-                    color: "yellow"
-
-                  }} />
+                  <EditRoundedIcon sx={{ color: "yellow" }} />
                 </button>
                 <button
                   className="icon deleteIcon"
@@ -151,19 +143,14 @@ function Quote() {
                     handleDeleteQuote(_id);
                   }}
                 >
-                  <DeleteForeverRoundedIcon sx={{
-                    color: "red"
-
-                  }} />
+                  <DeleteForeverRoundedIcon sx={{ color: "red" }} />
                 </button>
-
-
               </div>
-
             );
           })
-          ) : <></>
-        }
+        ) : (
+          <></>
+        )}
       </div>
 
       <AddEditQuote
@@ -174,13 +161,17 @@ function Quote() {
         editableTodo={editableQuote}
         handleEdit={handleEdit}
         setOpenAddEditQuote={setOpenAddEditQuote}
-        handleClickOpenAddEditQuote={handleClickOpenAddEditQuote} />
+        handleClickOpenAddEditQuote={handleClickOpenAddEditQuote}
+      />
 
-      <div className={`showHideFormButtom ${openAddEditQuote ? "hideFormBtton" : ""}`}
-        onClick={handleClickOpenAddEditQuote}>
+      <div
+        className={`showHideFormButtom ${
+          openAddEditQuote ? "hideFormBtton" : ""
+        }`}
+        onClick={handleClickOpenAddEditQuote}
+      >
         <AddRoundedIcon sx={{ fontSize: "2.5rem", color: "white" }} />
       </div>
-
     </div>
   );
 }

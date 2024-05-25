@@ -5,7 +5,7 @@ const cors = require("cors");
 const port = process.env.PORT || 8000;
 const hostname = process.env.HOSTNAME || "localhost";
 const CONNECTION_URL = process.env.CONNECTION_URL;
- 
+
 const app = express();
 app.use(cors());
 app.use(express.json({ strict: false }));
@@ -37,7 +37,6 @@ const quoteModel = mongoose.model("quote", quoteSchema);
 
 app.get("/", async (req, res) => {
   console.log("client came");
-
   const data = await quoteModel.find();
   if (data) {
     res.send(data);
@@ -45,7 +44,8 @@ app.get("/", async (req, res) => {
 });
 
 app.get("/quotes", async (req, res) => {
-  const data = await quoteModel.find();
+  const sort = req.query.sort === "desc" ? -1 : 1;
+  const data = await quoteModel.find().sort({ _id: sort });
   if (data) {
     res.send(data);
   }
@@ -101,7 +101,6 @@ app.put("/quote/:_id", async (req, res) => {
 
 app.delete("/quote/:_id", async (req, res) => {
   const { _id } = req.params;
-
   const deletedquote = await quoteModel.deleteOne({ _id: _id });
   res.json(req.params);
 });
