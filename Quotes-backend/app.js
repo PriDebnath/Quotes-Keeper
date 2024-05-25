@@ -30,13 +30,10 @@ const quoteSchema = mongoose.Schema({
 });
 
 // Creating model, it will generate a collection in database
-
 const quoteModel = mongoose.model("quote", quoteSchema);
 
 // Setting all routes
-
 app.get("/", async (req, res) => {
-  console.log("client came");
   const data = await quoteModel.find();
   if (data) {
     res.send(data);
@@ -45,7 +42,7 @@ app.get("/", async (req, res) => {
 
 app.get("/quotes", async (req, res) => {
   const sort = req.query.sort === "desc" ? -1 : 1;
-  const data = await quoteModel.find().sort({ _id: sort });
+  const data = await quoteModel.find().sort({ created_at: sort });
   if (data) {
     res.send(data);
   }
@@ -72,7 +69,6 @@ app.post("/quote", async (req, res) => {
       });
   } else {
     res.status(400).send("something missing ...");
-    console.log("something missing");
   }
 });
 
